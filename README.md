@@ -26,6 +26,8 @@ yarn lint
 
 ### 配置
 
+1. 创建 vue.config.js 用来配置一些配置信息
+
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
