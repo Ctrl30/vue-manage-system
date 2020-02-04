@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    app
     <router-view />
   </div>
 </template>
@@ -8,5 +7,7 @@
 <style lang="scss">
 #app {
   color: $them-color;
+  // width: 100vw;
+  height: 100vh;
 }
 </style>
