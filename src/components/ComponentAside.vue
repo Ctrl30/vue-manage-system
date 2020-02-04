@@ -12,6 +12,7 @@
       :index="item.path"
       v-for="(item, index) in noChildren"
       :key="index"
+      @click="clickMenu(item)"
     >
       <i :class="'el-icon-' + item.icon"></i>
       <span slot="title">{{ item.label }}</span>
@@ -31,6 +32,7 @@
           :index="child.path"
           v-for="(child, subindex) in item.children"
           :key="subindex"
+          @click="clickMenu(child)"
           >{{ child.label }}</el-menu-item
         >
       </el-menu-item-group>
@@ -84,6 +86,12 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    clickMenu(item) {
+      console.log("item", item);
+      this.$store.commit("selectMenu", item);
+    }
   }
 };
 </script>
@@ -91,5 +99,6 @@ export default {
 <style lang="scss" scoped>
 .el-menu {
   height: 100%;
+  border: none;
 }
 </style>
