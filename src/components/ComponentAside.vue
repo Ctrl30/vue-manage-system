@@ -4,6 +4,7 @@
   <el-menu
     default-active="/"
     class="el-menu-vertical-demo"
+    :collapse="isCollapse"
     background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b"
@@ -43,6 +44,9 @@
 <script>
 export default {
   computed: {
+    isCollapse() {
+      return this.$store.state.tab.isCollapse;
+    },
     noChildren() {
       return this.asideData.filter(item => !item.children);
     },
@@ -52,34 +56,41 @@ export default {
   },
   data() {
     return {
+      // isCollapse: false,
       asideData: [
         {
           path: "/",
           label: "首页",
-          icon: "home"
+          name: "home",
+          icon: "s-home"
         },
         {
           path: "/video",
           label: "视频管理",
+          name: "video",
           icon: "video-play"
         },
         {
           path: "/user",
           label: "用户管理",
+          name: "user",
           icon: "user"
         },
         {
           label: "其他页面",
           icon: "setting",
+          name: "setting",
           children: [
             {
               path: "/page1",
               label: "页面1",
+              name: "page1",
               icon: "setting"
             },
             {
               path: "/page2",
               label: "页面2",
+              name: "page2",
               icon: "setting"
             }
           ]
@@ -90,6 +101,7 @@ export default {
   methods: {
     clickMenu(item) {
       console.log("item", item);
+      this.$router.push({ name: item.name });
       this.$store.commit("selectMenu", item);
     }
   }

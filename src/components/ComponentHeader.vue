@@ -1,12 +1,17 @@
 <template>
   <header>
     <div class="l-content">
-      <el-button type="primary" icon="el-icon-menu" size="mini"></el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-menu"
+        size="mini"
+        @click="isCollapse"
+      ></el-button>
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item
-          ><a href="/">{{ current.label }}</a></el-breadcrumb-item
-        >
+        <el-breadcrumb-item :to="{ path: current.path }" v-if="current">{{
+          current.label
+        }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="r-content">
@@ -24,7 +29,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 export default {
   computed: {
     ...mapState({
@@ -35,6 +40,11 @@ export default {
     return {
       userImg: require("../assets/images/user.png")
     };
+  },
+  methods: {
+    ...mapMutations({
+      isCollapse: "isCollapse"
+    })
   }
 };
 </script>
@@ -61,8 +71,10 @@ header {
 }
 </style>
 <style>
-.el-breadcrumb__inner a,
-.el-breadcrumb__inner.is-link {
-  color: #ececec;
+.el-breadcrumb__item .el-breadcrumb__inner {
+  color: #f4f4f4;
+}
+.el-breadcrumb__item:last-child .el-breadcrumb__inner {
+  color: #ccc;
 }
 </style>
