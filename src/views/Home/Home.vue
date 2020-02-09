@@ -5,7 +5,7 @@
         <div class="user">
           <img :src="userImg" />
           <div class="userinfo">
-            <p class="name">Logan</p>
+            <p class="name">Polaris</p>
             <p class="access">超级管理员</p>
           </div>
         </div>
@@ -53,14 +53,18 @@
           </el-card>
         </div>
         <el-card shadow="hover">
-          <div style="height:280px"></div>
+          <Echart style="height:280px" :chartData="echartData.order"> </Echart>
         </el-card>
         <div class="graph">
           <el-card shadow="hover">
-            <div style="height:260px"></div>
+            <Echart style="height:260px" :chartData="echartData.user"></Echart>
           </el-card>
           <el-card shadow="hover">
-            <div style="height:260px"></div>
+            <Echart
+              :chartData="echartData.video"
+              style="height: 260px"
+              :isAxisChart="false"
+            ></Echart>
           </el-card>
         </div>
       </el-card>
@@ -69,7 +73,11 @@
 </template>
 
 <script>
+import Echart from "../../components/EChar";
 export default {
+  components: {
+    Echart
+  },
   data() {
     return {
       userImg: require("@/assets/images/user.png"),
@@ -117,14 +125,67 @@ export default {
           icon: "s-goods",
           color: "#5abeff"
         }
-      ]
+      ],
+      echartData: {
+        order: {
+          xData: [],
+          series: []
+        },
+        user: {
+          xData: [],
+          series: []
+        },
+        video: {
+          series: []
+        }
+      }
     };
   },
   methods: {
     getTableData() {
       this.$http("/home/getData").then(res => {
         this.tableData = res.data.data.tableData;
-        console.log(this.tableData);
+        console.log(res.data.data);
+        // 订单折线图
+        const order = res.data.data.orderData;
+        this.echartData.order.xData = order.date;
+        // 第一步 取出series中的nama部分----键名
+        let keyArray = Object.keys(order.data[0]);
+        console.log("keyArray", keyArray);
+        keyArray.forEach(key => {
+          this.echartData.order.series.push({
+            name: key,
+            data: order.data.map(item => item[key]),
+            type: "line"
+          });
+        });
+        this.echartData.order.series;
+        // 用户柱状图
+        const users = res.data.data.userData;
+        // let keys = Object.keys(users.data[0]);
+        // users.forEach(item => {
+        //   this.echartData.xData.push(item.date);
+        // });
+        // 用户柱状图
+        this.echartData.user.xData = users.map(item => item.date);
+        this.echartData.user.series.push({
+          name: "新增用户",
+          data: users.map(item => item.new),
+          type: "bar"
+        });
+        this.echartData.user.series.push({
+          name: "活跃用户",
+          data: users.map(item => item.active),
+          type: "bar",
+          barGap: 0
+        });
+        // 视频饼图
+        const pies = res.data.data.videoData;
+        this.echartData.video.series.push({
+          data: pies,
+          type: "pie"
+        });
+        // console.log("chartData", this.echartData.user);
       });
     }
   },
