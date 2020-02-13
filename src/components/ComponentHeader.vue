@@ -21,7 +21,9 @@
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item icon="el-icon-setting">个人中心</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-circle-close">退出</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-circle-close" @click.native="logout"
+            >退出</el-dropdown-item
+          >
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -44,7 +46,12 @@ export default {
   methods: {
     ...mapMutations({
       isCollapse: "isCollapse"
-    })
+    }),
+    logout() {
+      this.$store.commit("clearToken");
+      this.$store.commit("clearMenu");
+      location.reload();
+    }
   }
 };
 </script>

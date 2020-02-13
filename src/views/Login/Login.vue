@@ -34,6 +34,8 @@ export default {
           this.$store.commit("clearMenu");
           // 登录操作
           this.$store.commit("setMenu", res.data.menu);
+          //  设置token
+          this.$store.commit("setToken", res.data.token);
           //动态添加路由
           this.$store.commit("addMenu", this.$router);
           //   登录之后跳转到首页
