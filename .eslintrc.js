@@ -11,7 +11,7 @@ module.exports = {
       "error",
       {
         semi: true, //配置不需要封号
-        singleQuote: false //配置单引号
+        // singleQuote: false //配置单引号
         // printWidth: 300
       }
     ]

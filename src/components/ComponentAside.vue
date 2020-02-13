@@ -52,6 +52,9 @@ export default {
     },
     hasChildren() {
       return this.asideData.filter(item => item.children);
+    },
+    menu() {
+      return this.store.state.menu;
     }
   },
   data() {
