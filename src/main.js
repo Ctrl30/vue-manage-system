@@ -16,5 +16,9 @@ Vue.prototype.$http = http;
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  created() {
+    //刷新的时候动态添加路由
+    this.$store.commit("addMenu", router);
+  }
 }).$mount("#app");

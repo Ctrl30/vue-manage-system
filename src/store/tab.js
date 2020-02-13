@@ -1,3 +1,4 @@
+import Cookie from "js-cookie";
 export default {
   state: {
     currentMenu: null,
@@ -13,6 +14,47 @@ export default {
     ]
   },
   mutations: {
+    // 登录时设置menu
+    setMenu(state, val) {
+      state.menu = val;
+      Cookie.set("menu", JSON.stringify(val));
+    },
+    // 退出时清空menu
+    clearMenu(state) {
+      state.menu = [];
+      Cookie.remove("menu");
+    },
+    addMenu(state, router) {
+      if (!Cookie.get("menu")) {
+        return;
+      }
+      let menu = JSON.parse(Cookie.get("menu"));
+      state.menu = menu;
+      let currentMenu = [
+        // 布局组件
+        {
+          path: "/",
+          component: () => import("@/views/Main"),
+          children: []
+        }
+      ];
+      // 对menu遍历 设置到children里
+      menu.forEach(item => {
+        if (item.children) {
+          item.children = item.children.map(item => {
+            item.component = () => import(`@/views/${item.url}`);
+            return item;
+          });
+          currentMenu[0].children.push(...item.children);
+        } else {
+          item.component = () => import(`@/views/${item.url}`);
+          currentMenu[0].children.push(item);
+        }
+      });
+      console.log("current,", currentMenu);
+      router.addRoutes(currentMenu);
+      // router.addRoutes(currentMenu);
+    },
     selectMenu(state, val) {
       if (val.name !== "home") {
         state.currentMenu = val;

@@ -27,7 +27,20 @@ export default {
   methods: {
     login() {
       this.$http.post("/api/permission/getMenu", this.form).then(res => {
-        console.log(res);
+        // console.log(res);
+        res = res.data;
+        if (res.code === 20000) {
+          // 登录前清除menu  避免用户二次登录
+          this.$store.commit("clearMenu");
+          // 登录操作
+          this.$store.commit("setMenu", res.data.menu);
+          //动态添加路由
+          this.$store.commit("addMenu", this.$router);
+          //   登录之后跳转到首页
+          this.$router.push({ name: "home" });
+        } else {
+          this.$message.warning(res.data.message);
+        }
       });
     }
   }

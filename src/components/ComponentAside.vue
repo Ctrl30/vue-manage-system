@@ -48,13 +48,13 @@ export default {
       return this.$store.state.tab.isCollapse;
     },
     noChildren() {
-      return this.asideData.filter(item => !item.children);
+      return this.menu.filter(item => !item.children);
     },
     hasChildren() {
-      return this.asideData.filter(item => item.children);
+      return this.menu.filter(item => item.children);
     },
     menu() {
-      return this.store.state.menu;
+      return this.$store.state.tab.menu;
     }
   },
   data() {
